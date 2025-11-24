@@ -1,8 +1,27 @@
-﻿@{
+﻿@model List<B_BW1.Models.Products>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row row-cols-5">
+    @foreach (var p in Model)
+    {
+        <div class="col">
+            <div class="card shadow-sm p-2">
+                <img src="@p.imageURL" class="card-img-top" alt="@p.displayName" style="height:250px; object-fit:cover;" />
+
+                <div class="card-body">
+                    <h5 class="card-title text-truncate">@p.displayName</h5>
+
+                    <p class="card-text">
+                        <strong>Prezzo:</strong> @p.price €
+                    </p>
+
+                    <a href="/Home/Details/@p.idProduct" class="btn btn-primary w-100">
+                        Dettagli
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
 </div>
