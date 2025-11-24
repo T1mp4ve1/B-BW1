@@ -1,0 +1,277 @@
+Allora, il progetto in vs2022 con DB in ssms: models: namespace B_BW1.Models
+{
+    public class Products
+    {
+        public int idProduct { get; set; }
+        public string? displayName { get; set; }
+        public string? descriptionPro { get; set; }
+        public decimal price { get; set; }
+        public string? imageURL { get; set; }
+        public int inStock { get; set; }
+
+        public List<SecondaryImages> SecondaryImages { get; set; } = new();
+    }
+}. namespace B_BW1.Models
+{
+    public class SecondaryImages
+    {
+        public int idSecondaryImages { get; set; }
+        public int idProduct { get; set; }
+        public string? imageURL { get; set; }
+    }
+}. controllers: using B_BW1.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace B_BW1.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ProductsServices _productService = new();
+        private readonly SecondaryImagesServices _imagesService = new();
+        public IActionResult Index()
+        {
+            var products = _productService.GetAllProducts();
+            return View(products);
+        }
+
+        public IActionResult Privacy()
+        {
+            var products = _productService.GetAllProducts();
+
+            return Content($"Prodotti trovati nel DB: {products.Count}");
+        }
+
+        public IActionResult Details(int id)
+        {
+            var product = _productService.GetProductById(id);
+
+            if (product == null)
+                return NotFound();
+
+            product.SecondaryImages = _imagesService.GetImagesByProduct(id);
+
+            return View(product);
+        }
+    }
+}. data: using Microsoft.Data.SqlClient;
+using System.Data;
+
+namespace B_BW1.Data
+{
+    public static class DbHelper
+    {
+        private static string _connectionString =
+            "Server=T1MP4VE1\\SQLEXPRESS;User Id=sa;Password=7210;Database=B_BW3;TrustServerCertificate=True;";
+
+        // Imposta la connection string (utile se cambia in appsettings.json)
+        public static void SetConnectionString(string conn)
+        {
+            _connectionString = conn;
+        }
+
+        // SELECT → ritorna un DataTable
+        public static DataTable GetTable(string query, params SqlParameter[] parameters)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(query, conn);
+
+            if (parameters != null)
+                cmd.Parameters.AddRange(parameters);
+
+            var dt = new DataTable();
+            conn.Open();
+            dt.Load(cmd.ExecuteReader());
+            return dt;
+        }
+
+        // INSERT, UPDATE, DELETE
+        public static int ExecuteNonQuery(string query, params SqlParameter[] parameters)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(query, conn);
+
+            if (parameters != null)
+                cmd.Parameters.AddRange(parameters);
+
+            conn.Open();
+            return cmd.ExecuteNonQuery();
+        }
+
+        // SELECT di un singolo valore
+        public static object ExecuteScalar(string query, params SqlParameter[] parameters)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            using var cmd = new SqlCommand(query, conn);
+
+            if (parameters != null)
+                cmd.Parameters.AddRange(parameters);
+
+            conn.Open();
+            return cmd.ExecuteScalar();
+        }
+    }
+}. namespace B_BW1.Data
+{
+    public enum QueryType
+    {
+        Select,
+        Insert,
+        Update,
+        Delete
+    }
+}. services: using B_BW1.Data;
+using B_BW1.Models;
+using Microsoft.Data.SqlClient;
+
+namespace B_BW1.Services
+{
+    public class ProductsServices
+    {
+        public List<Products> GetAllProducts()
+        {
+            string query = "SELECT * FROM Products";
+            var dt = DbHelper.GetTable(query);
+
+            List<Products> list = new();
+
+            foreach (System.Data.DataRow row in dt.Rows)
+            {
+                list.Add(new Products
+                {
+                    idProduct = (int)row["idProduct"],
+                    displayName = row["displayName"].ToString(),
+                    descriptionPro = row["descriptionPro"].ToString(),
+                    price = (decimal)row["price"],
+                    imageURL = row["imageURL"].ToString(),
+                    inStock = (int)row["inStock"]
+                });
+            }
+
+            return list;
+        }
+
+        public Products GetProductById(int id)
+        {
+            string query = "SELECT * FROM Products WHERE idProduct = @id";
+
+            var dt = DbHelper.GetTable(query,
+                new SqlParameter("@id", id));
+
+            if (dt.Rows.Count == 0)
+                return null;
+
+            var row = dt.Rows[0];
+
+            return new Products
+            {
+                idProduct = (int)row["idProduct"],
+                displayName = row["displayName"].ToString(),
+                descriptionPro = row["descriptionPro"].ToString(),
+                price = (decimal)row["price"],
+                imageURL = row["imageURL"].ToString(),
+                inStock = (int)row["inStock"]
+            };
+        }
+    }
+}. using B_BW1.Data;
+using B_BW1.Models;
+using Microsoft.Data.SqlClient;
+
+namespace B_BW1.Services
+{
+    public class SecondaryImagesServices
+    {
+        public List<SecondaryImages> GetImagesByProduct(int idProduct)
+        {
+            string query = "SELECT * FROM SecondaryImages WHERE idProduct = @idProduct";
+
+            var dt = DbHelper.GetTable(query,
+                new SqlParameter("@idProduct", idProduct));
+
+            List<SecondaryImages> list = new();
+
+            foreach (System.Data.DataRow row in dt.Rows)
+            {
+                list.Add(new SecondaryImages
+                {
+                    idSecondaryImages = (int)row["idSecondaryImages"],
+                    idProduct = (int)row["idProduct"],
+                    imageURL = row["imageURL"].ToString()
+                });
+            }
+
+            return list;
+        }
+    }
+}. Views: Home: @model List<B_BW1.Models.Products>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row row-cols-5">
+    @foreach (var p in Model)
+    {
+        <div class="col">
+            <div class="card shadow-sm p-2">
+                <img src="@p.imageURL" class="card-img-top" alt="@p.displayName" style="height:250px; object-fit:cover;" />
+
+                <div class="card-body">
+                    <h5 class="card-title text-truncate">@p.displayName</h5>
+
+                    <p class="card-text">
+                        <strong>Prezzo:</strong> @p.price €
+                    </p>
+
+                    <a href="/Home/Details/@p.idProduct" class="btn btn-primary w-100">
+                        Dettagli
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>. appsettings.json: {
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=T1MP4VE1\\SQLEXPRESS;User Id=sa;Password=7210;Database=B_BW3;TrustServerCertificate=True;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}. program: using B_BW1.Data;
+using B_BW1.Services;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+// Services (Dependency Injection)
+builder.Services.AddScoped<ProductsServices>();
+builder.Services.AddScoped<SecondaryImagesServices>();
+
+// Connection string → DbHelper
+DbHelper.SetConnectionString(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();

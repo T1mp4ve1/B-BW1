@@ -7,6 +7,12 @@ namespace B_BW1.Controllers
     {
         private readonly ProductsServices _productService = new();
         private readonly SecondaryImagesServices _imagesService = new();
+        public HomeController(ProductsServices productService, SecondaryImagesServices imagesService)
+        {
+            _productService = productService;
+            _imagesService = imagesService;
+        }
+
         public IActionResult Index()
         {
             var products = _productService.GetAllProducts();
@@ -18,18 +24,6 @@ namespace B_BW1.Controllers
             var products = _productService.GetAllProducts();
 
             return Content($"Prodotti trovati nel DB: {products.Count}");
-        }
-
-        public IActionResult Details(int id)
-        {
-            var product = _productService.GetProductById(id);
-
-            if (product == null)
-                return NotFound();
-
-            product.SecondaryImages = _imagesService.GetImagesByProduct(id);
-
-            return View(product);
         }
     }
 }
