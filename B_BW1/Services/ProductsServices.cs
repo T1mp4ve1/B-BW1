@@ -17,10 +17,10 @@ namespace B_BW1.Services
                 list.Add(new Products
                 {
                     idProduct = (int)row["idProduct"],
-                    displayName = row["displayName"].ToString(),
-                    descriptionPro = row["descriptionPro"].ToString(),
+                    displayName = (string)row["displayName"],
+                    descriptionPro = (string)row["descriptionPro"],
                     price = (decimal)row["price"],
-                    imageURL = row["imageURL"].ToString(),
+                    imageURL = (string)row["imageURL"],
                     inStock = (int)row["inStock"]
                 });
             }

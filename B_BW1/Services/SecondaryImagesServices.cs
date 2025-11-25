@@ -21,7 +21,7 @@ namespace B_BW1.Services
                 {
                     idSecondaryImages = (int)row["idSecondaryImages"],
                     idProduct = (int)row["idProduct"],
-                    imageURL = row["imageURL"].ToString()
+                    imageURL = (string)row["imageURL"]
                 });
             }
             return list;
