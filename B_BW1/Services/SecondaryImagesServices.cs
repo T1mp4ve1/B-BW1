@@ -4,9 +4,9 @@ using Microsoft.Data.SqlClient;
 
 namespace B_BW1.Services
 {
-    public class SecondaryImagesServices
+    public static class SecondaryImagesServices
     {
-        public List<SecondaryImages> GetImagesByProduct(int idProduct)
+        public static List<SecondaryImages> GetImagesByProduct(int idProduct)
         {
             string query = "SELECT * FROM SecondaryImages WHERE idProduct = @idProduct";
 
@@ -24,7 +24,6 @@ namespace B_BW1.Services
                     imageURL = row["imageURL"].ToString()
                 });
             }
-
             return list;
         }
     }

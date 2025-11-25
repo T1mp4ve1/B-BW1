@@ -1,14 +1,9 @@
 ﻿using B_BW1.Data;
-using B_BW1.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-// Services (Dependency Injection)
-builder.Services.AddScoped<ProductsServices>();
-builder.Services.AddScoped<SecondaryImagesServices>();
 
 // Connection string → DbHelper
 DbHelper.SetConnectionString(builder.Configuration.GetConnectionString("DefaultConnection"));

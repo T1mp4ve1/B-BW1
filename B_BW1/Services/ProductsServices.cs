@@ -3,9 +3,9 @@ using B_BW1.Models;
 
 namespace B_BW1.Services
 {
-    public class ProductsServices
+    public static class ProductsServices
     {
-        public List<Products> GetAllProducts()
+        public static List<Products> GetAllProducts()
         {
             string query = "SELECT * FROM Products";
             var dt = DbHelper.GetTable(query);
@@ -24,7 +24,6 @@ namespace B_BW1.Services
                     inStock = (int)row["inStock"]
                 });
             }
-
             return list;
         }
     }
