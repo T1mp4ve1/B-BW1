@@ -12,7 +12,7 @@ namespace B_BW1.Data
             _connectionString = conn;
         }
 
-        public static DataTable GetTable(string query, params SqlParameter[] parameters)
+        public static DataTable GetTable(string query)
         {
             using var conn = new SqlConnection(_connectionString);
             using var cmd = new SqlCommand(query, conn);

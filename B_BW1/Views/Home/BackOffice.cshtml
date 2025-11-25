@@ -1,4 +1,37 @@
 ﻿@{
     ViewData["Title"] = "BackOffice";
 }
-<h1>@ViewData["Title"]</h1>
+
+
+<div class="row d-flex justify-content-center">
+    <div class="col-8">
+        <h2 class="text-center">Aggiungi prodotto</h2>
+        <form>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label m-0">Nome</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label m-0">Descrizione</label>
+                <textarea class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label m-0">URL dell'imagine</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="d-flex mb-3">
+                <div class="me-3 w-100">
+                    <label for="exampleInputPassword1" class="form-label m-0">Prezzo</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="w-100">
+                    <label for="exampleInputPassword1" class="form-label m-0">Quantita'</label>
+                    <input type="text" class="form-control">
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-warning rounded-0">Submit</button>
+        </form>
+    </div>
+   
+</div>
