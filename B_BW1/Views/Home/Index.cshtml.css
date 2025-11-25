@@ -1,27 +1,25 @@
-/* _content/B_BW1/Views/Home/Index.cshtml.rz.scp.css */
-.card[b-5xk7buxcdj] {
+﻿.card {
     overflow: hidden;
     box-shadow: 0px 0px 0px 2px rgb(248, 248, 248);
     transition:all 0.2s;
     cursor: pointer;
 }
 
-    .card:hover[b-5xk7buxcdj] {
+    .card:hover {
         box-shadow: 0px 5px 0px -2px #ffc107;
     }
 
-    a[b-5xk7buxcdj] {
+    a {
         text-decoration: none;
     }
 
-.card-body[b-5xk7buxcdj] {
+.card-body {
     background-color: #ffc107;
     position: absolute;
     top: -24px;
     transition: all 0.2s;
 }
 
-.card:hover .card-body[b-5xk7buxcdj] {
+.card:hover .card-body {
     top: 0px;
 }
-/* _content/B_BW1/Views/Shared/_Layout.cshtml.rz.scp.css */

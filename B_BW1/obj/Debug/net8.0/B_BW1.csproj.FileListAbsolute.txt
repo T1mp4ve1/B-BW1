@@ -79,3 +79,4 @@ C:\Users\Pavel\Desktop\Corsi\Back\BW\B-BW1\B_BW1\bin\Debug\net8.0\runtimes\unix\
 C:\Users\Pavel\Desktop\Corsi\Back\BW\B-BW1\B_BW1\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll
 C:\Users\Pavel\Desktop\Corsi\Back\BW\B-BW1\B_BW1\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 C:\Users\Pavel\Desktop\Corsi\Back\BW\B-BW1\B_BW1\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\Pavel\Desktop\Corsi\Back\BW\B-BW1\B_BW1\obj\Debug\net8.0\scopedcss\Views\Home\Index.cshtml.rz.scp.css

@@ -1,0 +1,23 @@
+﻿@model B_BW1.Models.Products
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="row">
+<div class="card d-flex flex-row border-0">
+        <div class="d-flex flex-column w-25 me-2">
+            @foreach (var img in Model.SecondaryImages)
+            {
+                <img src="@img.imageURL" class="card-img mb-2" alt="img" />
+            }
+        </div>
+            <img src="@Model.imageURL" class="card-img w-50" style="height: 500px; object-fit:cover;" alt="img" />
+            <div class="card-body">
+                <h5 class="card-title">@Model.displayName</h5>
+            <p class="card-text">@Model.descriptionPro</p>
+                <hr/>
+            <p class="card-text fw-bold">@Model.price €</p>
+            <button class="btn btn-warning rounded-0">Aggiungi</button>
+            </div>       
+        </div>    
+</div>

@@ -7,15 +7,15 @@ namespace B_BW1.Controllers
     {
         public IActionResult Index()
         {
-            var products = ProductsServices.GetAllProducts();
+            var products = ProductsServices.GetAllProducts("SELECT * FROM Products");
             return View(products);
         }
 
-        public IActionResult Privacy()
+        public IActionResult BackOffice()
         {
-            var products = ProductsServices.GetAllProducts();
+            var products = ProductsServices.GetAllProducts("SELECT * FROM Products");
 
-            return Content($"Prodotti trovati nel DB: {products.Count}");
+            return View(products);
         }
     }
 }
