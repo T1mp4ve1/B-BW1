@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "BackOffice";
+}
+
+<form method="post" action="/BackOffice/Insert">
+    <div class="mb-3">
+        <label class="form-label m-0">Nome</label>
+        <input name="displayName" type="text" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label m-0">Descrizione</label>
+        <textarea name="descriptionPro" class="form-control" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label m-0">Immagine principale</label>
+        <input name="imageURL" type="text" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label m-0">Immagini secondarie (separate da virgola)</label>
+        <input name="secondaryImages" type="text" class="form-control" required>
+    </div>
+
+    <div class="d-flex mb-3">
+        <div class="me-3 w-100">
+            <label class="form-label m-0">Prezzo</label>
+            <input name="price" type="text" class="form-control" required>
+        </div>
+        <div class="w-100">
+            <label class="form-label m-0">Quantita'</label>
+            <input name="inStock" type="text" class="form-control" required>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-warning rounded-0">Submit</button>
+</form>
+

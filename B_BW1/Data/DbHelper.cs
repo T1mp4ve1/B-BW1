@@ -12,6 +12,8 @@ namespace B_BW1.Data
             _connectionString = conn;
         }
 
+        public static string ConnectionString => _connectionString;
+
         public static DataTable GetTable(string query)
         {
             using var conn = new SqlConnection(_connectionString);

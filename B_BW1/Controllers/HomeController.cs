@@ -10,12 +10,5 @@ namespace B_BW1.Controllers
             var products = ProductsServices.GetAllProducts("SELECT * FROM Products");
             return View(products);
         }
-
-        public IActionResult BackOffice()
-        {
-            var products = ProductsServices.GetAllProducts("SELECT * FROM Products");
-
-            return View(products);
-        }
     }
 }

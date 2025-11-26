@@ -1,5 +1,6 @@
 ﻿using B_BW1.Data;
 using B_BW1.Models;
+using Microsoft.Data.SqlClient;
 
 namespace B_BW1.Services
 {
@@ -25,7 +26,6 @@ namespace B_BW1.Services
             }
             return list;
         }
-
         //SOLO CON ID
         public static Products GetProductById(int id)
         {
@@ -41,7 +41,6 @@ namespace B_BW1.Services
                 inStock = (int)row["inStock"]
             };
         }
-
         //IMMAGINI SECONDARI
         public static List<SecondaryImages> GetImagesByProduct(int id)
         {
@@ -62,5 +61,48 @@ namespace B_BW1.Services
             }
             return list;
         }
+
+        //INSERT
+        public static int InsertProduct(string displayName, string descriptionPro,
+                                decimal price, string imageURL, int inStock)
+        {
+            string query =
+                "INSERT INTO Products (displayName, descriptionPro, price, imageURL, inStock) " +
+                "OUTPUT INSERTED.idProduct " +
+                "VALUES (@n, @d, @p, @i, @s)";
+
+            using var conn = new SqlConnection(DbHelper.ConnectionString);
+            using var cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@n", displayName);
+            cmd.Parameters.AddWithValue("@d", descriptionPro);
+            cmd.Parameters.AddWithValue("@p", price);
+            cmd.Parameters.AddWithValue("@i", imageURL);
+            cmd.Parameters.AddWithValue("@s", inStock);
+
+            conn.Open();
+            return (int)cmd.ExecuteScalar();
+        }
+
+        public static void InsertSecondaryImages(int idProduct, IEnumerable<string> urls)
+        {
+            using var conn = new SqlConnection(DbHelper.ConnectionString);
+            conn.Open();
+
+            foreach (var url in urls)
+            {
+                string cleanUrl = url.Trim();
+                if (string.IsNullOrWhiteSpace(cleanUrl)) continue;
+
+                string query =
+                    "INSERT INTO SecondaryImages (idProduct, imageURL) VALUES (@id, @url)";
+
+                using var cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", idProduct);
+                cmd.Parameters.AddWithValue("@url", cleanUrl);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }
