@@ -17,7 +17,16 @@
             <p class="card-text">@Model.descriptionPro</p>
                 <hr/>
             <p class="card-text fw-bold">@Model.price €</p>
-            <button class="btn btn-warning rounded-0">Aggiungi</button>
+
+            <form method="post" action="/Cart/Add">
+                <input type="hidden" name="id" value="@Model.idProduct" />
+
+                <label>Quantità:</label>
+                <input type="number" name="qty" value="1" min="1" class="form-control mb-2" style="width:120px;" />
+
+                <button type="submit" class="btn btn-warning rounded-0">Aggiungi <i class="bi bi-bag-check-fill"></i></button>
+            </form>
+
             </div>       
         </div>    
 </div>

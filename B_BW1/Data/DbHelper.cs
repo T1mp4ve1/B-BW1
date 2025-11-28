@@ -5,13 +5,17 @@ namespace B_BW1.Data
 {
     public static class DbHelper
     {
-        private static string _connectionString = "";
+        private static string? _connectionString;
 
         public static void SetConnectionString(string conn)
         {
             _connectionString = conn;
         }
 
+        public static SqlConnection GetConnection()
+        {
+            return new SqlConnection(_connectionString);
+        }
         public static string ConnectionString => _connectionString;
 
         public static DataTable GetTable(string query)

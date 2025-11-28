@@ -1,9 +1,14 @@
 ﻿using B_BW1.Data;
+using B_BW1.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
+builder.Services.AddScoped<CartServices>();
+builder.Services.AddHttpContextAccessor();
+
 
 // Connection string → DbHelper
 DbHelper.SetConnectionString(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -21,6 +26,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(

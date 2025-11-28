@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<B_BW1.Models.Products>
+
+@{
     ViewData["Title"] = "BackOffice";
 }
 
@@ -37,3 +39,41 @@
     <button type="submit" class="btn btn-warning rounded-0">Submit</button>
 </form>
 
+<hr />
+
+<h3>Prodotti esistenti</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Prezzo</th>
+            <th>Qty</th>
+            <th>Immagine</th>
+            <th>Azioni</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.idProduct</td>
+                <td>@p.displayName</td>
+                <td>@p.price €</td>
+                <td>@p.inStock</td>
+                <td><img src="@p.imageURL" width="70" /></td>
+
+                <td>
+                    <form method="post" action="/BackOffice/Delete" class="d-inline">
+                        <input type="hidden" name="id" value="@p.idProduct" />
+                        <button class="btn btn-sm btn-danger">
+                            Elimina
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

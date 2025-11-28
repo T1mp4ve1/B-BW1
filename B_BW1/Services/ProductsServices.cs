@@ -7,9 +7,9 @@ namespace B_BW1.Services
     public static class ProductsServices
     {
         //TUTTI
-        public static List<Products> GetAllProducts(string query)
+        public static List<Products> GetAllProducts()
         {
-            var dt = DbHelper.GetTable(query);
+            var dt = DbHelper.GetTable("SELECT * FROM Products");
             List<Products> list = new();
 
             foreach (System.Data.DataRow row in dt.Rows)
@@ -84,6 +84,7 @@ namespace B_BW1.Services
             return (int)cmd.ExecuteScalar();
         }
 
+        //INSERT SECONDARIE
         public static void InsertSecondaryImages(int idProduct, IEnumerable<string> urls)
         {
             using var conn = new SqlConnection(DbHelper.ConnectionString);
@@ -104,5 +105,27 @@ namespace B_BW1.Services
             }
         }
 
+        //DELETE
+        public static void DeleteProduct(int id)
+        {
+            using (var conn = DbHelper.GetConnection())
+            {
+                conn.Open();
+
+                string deleteImages = "DELETE FROM SecondaryImages WHERE idProduct = @id";
+                using (var cmdImg = new SqlCommand(deleteImages, conn))
+                {
+                    cmdImg.Parameters.AddWithValue("@id", id);
+                    cmdImg.ExecuteNonQuery();
+                }
+
+                string deleteProduct = "DELETE FROM Products WHERE idProduct = @id";
+                using (var cmdProd = new SqlCommand(deleteProduct, conn))
+                {
+                    cmdProd.Parameters.AddWithValue("@id", id);
+                    cmdProd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

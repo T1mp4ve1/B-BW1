@@ -8,7 +8,8 @@ namespace B_BW1.Controllers
         // GET
         public IActionResult Index()
         {
-            return View();
+            var prodotti = ProductsServices.GetAllProducts();
+            return View(prodotti);
         }
 
         // POST
@@ -28,5 +29,14 @@ namespace B_BW1.Controllers
 
             return RedirectToAction("Index");
         }
+
+        //DELETE
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            ProductsServices.DeleteProduct(id);
+            return RedirectToAction("Index");
+        }
+
     }
 }

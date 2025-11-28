@@ -7,7 +7,7 @@ namespace B_BW1.Controllers
     {
         public IActionResult Index()
         {
-            var products = ProductsServices.GetAllProducts("SELECT * FROM Products");
+            var products = ProductsServices.GetAllProducts();
             return View(products);
         }
     }
